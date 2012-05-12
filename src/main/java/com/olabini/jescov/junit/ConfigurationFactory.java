@@ -15,7 +15,6 @@ public class ConfigurationFactory {
 		final Configuration config = new Configuration();
 		config.setEnabled(Boolean.getBoolean("com.olabini.jescov.enabled"));
 
-		final String jsDir = suite.specDir();
 		for (final String filename : RhinoContext.BUNDLE_FILES.asMap().values()) {
 			if (filename.endsWith(".js")) {
 				config.ignore(filename);
@@ -23,9 +22,14 @@ public class ConfigurationFactory {
 		}
 		config.ignore("script");
 
-		for (final String spec : FindFiles.findFiles(jsDir,
+		for (final String spec : FindFiles.findFiles(suite.specDir(),
 				suite.specInclude(), suite.specExclude())) {
-			config.ignore(jsDir + "/" + spec);
+			config.ignore(suite.specDir() + "/" + spec);
+		}
+
+		for (final String mock : FindFiles.findFiles(suite.mockDir(),
+				suite.mockInclude(), suite.mockExclude())) {
+			config.ignore(suite.mockDir() + "/" + mock);
 		}
 
 		final String[] ignoreFiles = System.getProperty(
@@ -37,9 +41,8 @@ public class ConfigurationFactory {
 		if (conf != null) {
 			// Ignore additional files from the JesCovConfig annotation - note
 			// we include the excludes since we are building the ignore list
-			final String[] files = FindFiles.findFiles(suite.sourceDir(),
-					conf.sourceExclude(), new String[0]);
-			for (final String file : files) {
+			for (final String file : FindFiles.findFiles(suite.sourceDir(),
+					conf.sourceExclude(), new String[0])) {
 				config.ignore(suite.sourceDir() + "/" + file);
 			}
 		}
