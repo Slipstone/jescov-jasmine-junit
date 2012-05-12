@@ -6,7 +6,7 @@
 
 	<groupId>com.olabini</groupId>
 	<artifactId>jescov-jasmine-junit</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>JesCov Jasmine Junit Runner</name>
 
 	<dependencies>
